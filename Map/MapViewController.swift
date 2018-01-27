@@ -9,50 +9,93 @@
 import UIKit
 import MapKit
 
-class MapViewController: UIViewController {
+extension MKMapView {
+    func set(_ type: MKMapType) {
+        self.mapType = type
+    }
+}
 
+class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
+    
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var mapSegmented: UISegmentedControl!
+    
+    let locationManager = CLLocationManager()
+    var userCoordinate: CLLocationCoordinate2D?
+    var place: Place?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+        locationManager.delegate = self
         setupMap()
     }
+    
+    
+    //////////////////////////////
+    // MARK: - Location Manager //
+    //////////////////////////////
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        guard status == .authorizedWhenInUse else {
+            return
+        }
+        
+        mapView.showsUserLocation = true
+    }
+    
+    
+    /////////////////////////
+    // MARK: - Map Manager //
+    /////////////////////////
 
     private func setupMap() {
-        mapView.mapType = .hybrid
+        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+            mapView.showsUserLocation = true
+        } else {
+            locationManager.requestWhenInUseAuthorization()
+        }
+        
+        mapSegmented.selectedSegmentIndex = 2
+        mapView.delegate = self
+        mapView.set(.hybrid)
         setPin()
     }
     
     private func setPin() {
         let point = MKPointAnnotation()
-        let coordinate = CLLocationCoordinate2DMake(48.862725, 2.287592000000018)
         
-        point.coordinate = coordinate
+        point.coordinate = place == nil ? CLLocationCoordinate2DMake(45.739368, 4.817544) : place!.coordinate
+        point.title = place == nil ? "Le 101" : place!.title
+        point.subtitle = place == nil ? "A cool place to be" : place!.description
         mapView.addAnnotation(point)
         zoomOn(point: point)
     }
     
     private func zoomOn(point: MKPointAnnotation) {
-        var region = MKCoordinateRegion()
+        var region = MKCoordinateRegionMakeWithDistance(point.coordinate, 500, 500)
         
         region.center.latitude = point.coordinate.latitude
         region.center.longitude = point.coordinate.longitude
         mapView.setRegion(region, animated: true)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    @IBAction func displayLocation(_ sender: Any) {
+        let point = MKPointAnnotation()
+        
+        point.coordinate = mapView.userLocation.coordinate
+        zoomOn(point: point)
     }
-    */
-
+    
+    @IBAction func switchChanged(_ sender: Any) {
+        switch mapSegmented.selectedSegmentIndex {
+        case 0:
+            mapView.set(.standard)
+        case 1:
+            mapView.set(.satellite)
+        case 2:
+            mapView.set(.hybrid)
+        default:
+            mapView.set(.standard)
+        }
+    }
 }

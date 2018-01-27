@@ -24,16 +24,24 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zPS-hc-Ceb">
                                 <rect key="frame" x="0.0" y="574" width="375" height="44"/>
                                 <items>
-                                    <barButtonItem title="Item" id="DqL-aU-qaa"/>
+                                    <barButtonItem title="Item" image="location icon" id="DqL-aU-qaa">
+                                        <connections>
+                                            <action selector="displayLocation:" destination="9pv-A4-QxB" id="42s-UK-tZo"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="jIY-r4-8I6"/>
                                     <barButtonItem style="plain" id="1br-QQ-Oj1">
                                         <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="SxI-oP-5Br">
-                                            <rect key="frame" x="238" y="7.5" width="121" height="29"/>
+                                            <rect key="frame" x="147" y="7" width="212" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <segments>
-                                                <segment title="First"/>
-                                                <segment title="Second"/>
+                                                <segment title="Standard"/>
+                                                <segment title="Satelite"/>
+                                                <segment title="Hybrid"/>
                                             </segments>
+                                            <connections>
+                                                <action selector="switchChanged:" destination="9pv-A4-QxB" eventType="valueChanged" id="gcr-qn-UwC"/>
+                                            </connections>
                                         </segmentedControl>
                                     </barButtonItem>
                                 </items>
@@ -54,6 +62,7 @@
                     <navigationItem key="navigationItem" title="Map" id="LXz-a0-LHJ"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="mapSegmented" destination="SxI-oP-5Br" id="nb5-ZB-tLa"/>
                         <outlet property="mapView" destination="mFU-UH-0LB" id="3oY-dx-gdC"/>
                     </connections>
                 </viewController>
@@ -105,7 +114,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="cell" textLabel="MEO-OA-Kmn" style="IBUITableViewCellStyleDefault" id="SfC-As-HvL">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="cell" textLabel="MEO-OA-Kmn" detailTextLabel="nst-3n-MA9" style="IBUITableViewCellStyleSubtitle" id="SfC-As-HvL">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SfC-As-HvL" id="XTo-W0-Sub">
@@ -113,9 +122,16 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="MEO-OA-Kmn">
-                                            <rect key="frame" x="16" y="0.0" width="324" height="43.5"/>
+                                            <rect key="frame" x="16" y="5" width="33.5" height="20.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="nst-3n-MA9">
+                                            <rect key="frame" x="16" y="25.5" width="44" height="14.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -129,6 +145,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="List" id="grv-nw-RzE"/>
+                    <connections>
+                        <segue destination="9pv-A4-QxB" kind="show" identifier="location" id="Ygq-Xv-jGF"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="K0j-YD-HVk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -175,6 +194,10 @@
     </scenes>
     <resources>
         <image name="list icon" width="27" height="23"/>
+        <image name="location icon" width="25" height="25"/>
         <image name="map icon" width="25" height="25"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="Ygq-Xv-jGF"/>
+    </inferredMetricsTieBreakers>
 </document>
