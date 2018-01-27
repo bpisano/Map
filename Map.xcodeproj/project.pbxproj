@@ -16,6 +16,7 @@
 		43434E42201BC500006C5314 /* ListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43434E41201BC500006C5314 /* ListTableViewController.swift */; };
 		43434E44201BC6DA006C5314 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43434E43201BC6DA006C5314 /* MapViewController.swift */; };
 		50AC0965201CF8890062D0E4 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50AC0964201CF8890062D0E4 /* Place.swift */; };
+		50AC0967201CFD680062D0E4 /* PlaceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50AC0966201CFD680062D0E4 /* PlaceTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		43434E41201BC500006C5314 /* ListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewController.swift; sourceTree = "<group>"; };
 		43434E43201BC6DA006C5314 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		50AC0964201CF8890062D0E4 /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
+		50AC0966201CFD680062D0E4 /* PlaceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 			children = (
 				43434E11201BC304006C5314 /* AppDelegate.swift */,
 				50AC0964201CF8890062D0E4 /* Place.swift */,
+				50AC0966201CFD680062D0E4 /* PlaceTableViewCell.swift */,
 				43434E43201BC6DA006C5314 /* MapViewController.swift */,
 				43434E41201BC500006C5314 /* ListTableViewController.swift */,
 				43434E17201BC304006C5314 /* Main.storyboard */,
@@ -269,6 +272,7 @@
 				43434E44201BC6DA006C5314 /* MapViewController.swift in Sources */,
 				43434E42201BC500006C5314 /* ListTableViewController.swift in Sources */,
 				50AC0965201CF8890062D0E4 /* Place.swift in Sources */,
+				50AC0967201CFD680062D0E4 /* PlaceTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

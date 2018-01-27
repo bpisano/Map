@@ -13,6 +13,14 @@ extension MKMapView {
     func set(_ type: MKMapType) {
         self.mapType = type
     }
+    
+    func zoomOn(point: MKPointAnnotation) {
+        var region = MKCoordinateRegionMakeWithDistance(point.coordinate, 500, 500)
+        
+        region.center.latitude = point.coordinate.latitude
+        region.center.longitude = point.coordinate.longitude
+        self.setRegion(region, animated: true)
+    }
 }
 
 class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
@@ -68,22 +76,14 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         point.title = place == nil ? "Le 101" : place!.title
         point.subtitle = place == nil ? "A cool place to be" : place!.description
         mapView.addAnnotation(point)
-        zoomOn(point: point)
-    }
-    
-    private func zoomOn(point: MKPointAnnotation) {
-        var region = MKCoordinateRegionMakeWithDistance(point.coordinate, 500, 500)
-        
-        region.center.latitude = point.coordinate.latitude
-        region.center.longitude = point.coordinate.longitude
-        mapView.setRegion(region, animated: true)
+        mapView.zoomOn(point: point)
     }
     
     @IBAction func displayLocation(_ sender: Any) {
         let point = MKPointAnnotation()
         
         point.coordinate = mapView.userLocation.coordinate
-        zoomOn(point: point)
+        mapView.zoomOn(point: point)
     }
     
     @IBAction func switchChanged(_ sender: Any) {
