@@ -14,11 +14,20 @@ extension MKMapView {
         self.mapType = type
     }
     
-    func zoomOn(point: MKPointAnnotation) {
-        var region = MKCoordinateRegionMakeWithDistance(point.coordinate, 500, 500)
+    func addPin(place: Place) {
+        let point = MKPointAnnotation()
+        point.coordinate = place.coordinate
+        point.title = place.title
+        point.subtitle = place.description
         
-        region.center.latitude = point.coordinate.latitude
-        region.center.longitude = point.coordinate.longitude
+        self.addAnnotation(point)
+    }
+    
+    func zoomOn(place: Place) {
+        var region = MKCoordinateRegionMakeWithDistance(place.coordinate, 500, 500)
+        region.center.latitude = place.coordinate.latitude
+        region.center.longitude = place.coordinate.longitude
+        
         self.setRegion(region, animated: true)
     }
 }
@@ -27,6 +36,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var mapSegmented: UISegmentedControl!
+    @IBOutlet weak var aboutLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var detailView: UIVisualEffectView!
     
     let locationManager = CLLocationManager()
     var userCoordinate: CLLocationCoordinate2D?
@@ -34,7 +46,22 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         locationManager.delegate = self
+        
+        if place == nil {
+            detailView.removeFromSuperview()
+        }
+        
+        if let p = place {
+            place = p
+        }
+        else {
+            place = Place(coordinate: CLLocationCoordinate2DMake(45.739368, 4.817544), title: "Le 101", description: "A cool place to be", text: "The best coding school ever.")
+        }
+        
+        aboutLabel.text = "About " + place!.title
+        descriptionLabel.text = place!.text
         setupMap()
     }
     
@@ -66,24 +93,14 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         mapSegmented.selectedSegmentIndex = 2
         mapView.delegate = self
         mapView.set(.hybrid)
-        setPin()
-    }
-    
-    private func setPin() {
-        let point = MKPointAnnotation()
-        
-        point.coordinate = place == nil ? CLLocationCoordinate2DMake(45.739368, 4.817544) : place!.coordinate
-        point.title = place == nil ? "Le 101" : place!.title
-        point.subtitle = place == nil ? "A cool place to be" : place!.description
-        mapView.addAnnotation(point)
-        mapView.zoomOn(point: point)
+        mapView.addPin(place: place!)
+        mapView.zoomOn(place: place!)
     }
     
     @IBAction func displayLocation(_ sender: Any) {
-        let point = MKPointAnnotation()
+        let locationPlace = Place(coordinate: mapView.userLocation.coordinate, title: "", description: "", text: "")
         
-        point.coordinate = mapView.userLocation.coordinate
-        mapView.zoomOn(point: point)
+        mapView.zoomOn(place: locationPlace)
     }
     
     @IBAction func switchChanged(_ sender: Any) {
@@ -96,6 +113,18 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             mapView.set(.hybrid)
         default:
             mapView.set(.standard)
+        }
+    }
+    
+    
+    ////////////////////////
+    // MARK: - Navigation //
+    ////////////////////////
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "detail" {
+            let detailVC = segue.destination as! DetailViewController
+            detailVC.detailtext = place!.text
         }
     }
 }

@@ -13,4 +13,5 @@ struct Place {
     var coordinate: CLLocationCoordinate2D
     var title: String
     var description: String
+    var text: String
 }
